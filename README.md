@@ -26,11 +26,24 @@ A Infraestrutura como Código (IaC) nos permite gerenciar e provisionar recursos
 1. **Configurar um projeto Terraform básico:**  
    Completar a estrutura fornecida no repositório para criar um arquivo local chamado `exemplo.txt`. Personalizar o nome e o conteúdo do arquivo utilizando variáveis (variables.tf) no Terraform.
 
-2. **Executar o pipeline GitLab:**  
-   Validar, planejar e aplicar as configurações no pipeline do GitLab, observando as suas etapas de execução.
+2. **Executar o pipeline no GitHub Actions:**  
+   Validar, planejar e aplicar as configurações pelo workflow do GitHub Actions, observando as suas etapas de execucao.
 
 3. **Validar o artefato gerado:**  
    Realizar o download do arquivo `exemplo.txt`, gerado como artefato do pipeline, e confirmar que seu conteúdo está de acordo com as configurações no Terraform.
+
+## Pipeline no GitHub Actions
+
+O pipeline CI/CD deste repositorio esta definido em `.github/workflows/tofu-ci.yml` com tres jobs principais:
+
+- **validate**  
+   Executa `tofu init` e `tofu validate` no diretorio `terraform/`.
+
+- **plan**  
+   Executa `tofu plan -out=plan.out` e publica o plano como artefato (`tofu-plan`).
+
+- **apply**  
+   Roda apenas em push para a branch `main`, faz download do artefato do plano e executa `tofu apply -auto-approve plan.out`. Ao final, publica `exemplo.txt` como artefato (`tofu-output`).
 
 ## Executando o Projeto Localmente
 
