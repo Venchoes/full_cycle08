@@ -13,6 +13,7 @@ jobs:
   validate:
     name: Validate
     runs-on: ubuntu-latest
+    enviroments: Deploy com permissao
 
     steps:
       - name: Checkout
