@@ -1,0 +1,40 @@
+include:
+  - component: gitlab.com/components/opentofu/validate-plan-apply@0.17.0
+    inputs:
+      version: 0.17.0
+      opentofu_version: 1.6.1
+      root_dir: terraform/
+      state_name: iam
+
+stages:
+  - validate
+  - plan
+  - apply
+
+variables:
+  TF_ROOT: "./terraform"
+
+before_script:
+  - cd $TF_ROOT
+  - tofu init -input=false
+
+validate:
+  stage: validate
+  script:
+    - tofu validate
+
+plan:
+  stage: plan
+  script:
+    - tofu plan -out=plan.out
+  artifacts:
+    paths:
+      - $TF_ROOT/plan.out
+
+apply:
+  stage: apply
+  script:
+    - tofu apply -auto-approve plan.out
+  artifacts:
+    paths:
+      - $TF_ROOT/exemplo.txt
